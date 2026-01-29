@@ -7,6 +7,7 @@ uses
   System.Classes,
   System.Net.URLClient,
   System.Net.HttpClient,
+  System.Net.HttpClientComponent,
   System.NetEncoding,
   uCieloConfig,
   uLogger;
