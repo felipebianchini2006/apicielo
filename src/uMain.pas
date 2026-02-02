@@ -177,7 +177,9 @@ begin
   LoadConfigToUI;
   if cbPaymentType.Items.Count > 0 then
     cbPaymentType.ItemIndex := 0;
-  grpCardData.Enabled := chkIncludeCard.Checked;
+  chkIncludeCard.Checked := False;
+  chkIncludeCard.Enabled := False;
+  grpCardData.Enabled := False;
   chkCapture.Checked := True;
   RefreshClient;
 end;
@@ -389,7 +391,6 @@ var
   Customer: TJSONObject;
   Payment: TJSONObject;
   Link: TJSONObject;
-  Card: TJSONObject;
   PaymentType: string;
   AmountCents: Integer;
   Installments: Integer;
@@ -438,20 +439,7 @@ begin
       Link.AddPair('ReturnUrl', Trim(edtReturnUrl.Text));
     Payment.AddPair('Link', Link);
 
-    if chkIncludeCard.Checked then
-    begin
-      Card := TJSONObject.Create;
-      Card.AddPair('CardNumber', Trim(edtCardNumber.Text));
-      Card.AddPair('Holder', Trim(edtCardHolder.Text));
-      Card.AddPair('ExpirationDate', Trim(edtCardExp.Text));
-      Card.AddPair('SecurityCode', Trim(edtCardCvv.Text));
-      if Trim(cbCardBrand.Text) <> '' then
-        Card.AddPair('Brand', Trim(cbCardBrand.Text));
-      if SameText(PaymentType, 'DebitCard') then
-        Payment.AddPair('DebitCard', Card)
-      else
-        Payment.AddPair('CreditCard', Card);
-    end;
+    // Payment link: card data is provided by the customer on the hosted page.
 
     Root.AddPair('Payment', Payment);
 
