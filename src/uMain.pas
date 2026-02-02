@@ -409,10 +409,13 @@ begin
     end;
 
     Payment := TJSONObject.Create;
-    PaymentType := Trim(cbPaymentType.Text);
-    if PaymentType = '' then
-      PaymentType := 'CreditCard';
-    Payment.AddPair('Type', PaymentType);
+    if chkIncludeCard.Checked then
+    begin
+      PaymentType := Trim(cbPaymentType.Text);
+      if PaymentType = '' then
+        PaymentType := 'CreditCard';
+      Payment.AddPair('Type', PaymentType);
+    end;
 
     AmountCents := ParseAmountToCents(edtAmount.Text);
     Installments := StrToIntDef(Trim(edtInstallments.Text), 1);
